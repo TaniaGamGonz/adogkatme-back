@@ -2,8 +2,13 @@ const express = require('express');
 const app = express();
 const cors = require('cors');
 const { config } = require('./config/index');
+
+const userApi = require('./routes/user.routes');
+const authApi = require('./routes/auth');
 const petsApi = require('./routes/pets.routes.js');
 const userPetsApi = require('./routes/userPet.routes.js');
+
+
 const { logErrors, errorHandler } = require('./utils/middlewares/errorHandlers.js');
 
 
@@ -17,7 +22,9 @@ app.use(errorHandler);
 
 app.use(cors({origin: 'http://localhost:4200'}));
  
+authApi(app);
 petsApi(app);
+userApi(app);
 userPetsApi(app);
 
 

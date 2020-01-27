@@ -61,7 +61,6 @@ function petsApi(app) {
 
         try {
             const deletedPetId = await petsService.deletePet({ petId });
-
             res.status(200).json(deletedPetId);
         }catch(err){
             next(err);

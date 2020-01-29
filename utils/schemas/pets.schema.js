@@ -4,7 +4,6 @@ const petIdSchema = joi.string().regex(/^[0-9a-fA-F]{24}$/);
 const petStringSchema = joi.string();
 const petBooleanSchema = joi.boolean();
 const petArrayStringSchema = joi.array().items(joi.string());
-const petObjectSchema = joi.array().items(joi.object());
 
 const createPetSchema = {
     name: petStringSchema,
@@ -12,13 +11,13 @@ const createPetSchema = {
     race: petStringSchema,
     owner: petStringSchema.lowercase(),
     gender: petStringSchema,
-    health: petObjectSchema,
-    age: petObjectSchema,
-    size: joi.any(),
-    activity: petObjectSchema,
-    weight: petStringSchema,
-    country: petObjectSchema,
-    city: petObjectSchema,
+    health: petStringSchema,
+    age: petStringSchema,
+    size: petStringSchema,
+    activity: petStringSchema,
+    weight: joi.any(),
+    country: petStringSchema,
+    city: petStringSchema,
     PPPlicense: petBooleanSchema,
     description: petStringSchema,
     photos: petArrayStringSchema,
@@ -38,9 +37,9 @@ const createPetSchema = {
     sociablePeople: petBooleanSchema,
     sociableOtherAnimals: petBooleanSchema,
     sociablePets: petBooleanSchema,
-    independence: petObjectSchema,
-    noise: petObjectSchema,
-    adoptionReason: petObjectSchema,
+    independence: petStringSchema,
+    noisy: petStringSchema,
+    adoptionReason: petStringSchema,
     play: petBooleanSchema,
     scape: petBooleanSchema,
     sleep: petBooleanSchema,

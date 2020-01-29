@@ -1,9 +1,15 @@
 const express = require('express');
+const passport = require('passport');
 const UserPetsService = require('../services/userPets.service');
 const validationHandler = require('../utils/middlewares/validationHandler');
 const { petIdSchema } = require('../utils/schemas/pets.schema');
 const { userIdSchema } = require('../utils/schemas/users.schema');
 const { createUserPetSchema } = require('../utils/schemas/userPets.schema');
+
+
+//Validación de JWT
+require('../utils/auth/jwt')
+
 
 function userPetsApi(app) {
     const router = express.Router();
@@ -11,7 +17,7 @@ function userPetsApi(app) {
 
     const userPetsService = new UserPetsService();
 
-    router.get('/', validationHandler({ userId: userIdSchema }, 'query'),
+    router.get('/', passport.authenticate('jwt', { session : false }), validationHandler({ userId: userIdSchema }, 'query'),
         async function (req, res, next) {
             const { userId } = req.query;
 
@@ -29,7 +35,7 @@ function userPetsApi(app) {
     );
 
 
-    router.post('/', validationHandler(createUserPetSchema), async function (req, res, next){
+    router.post('/', passport.authenticate('jwt', { session : false }), validationHandler(createUserPetSchema), async function (req, res, next){
         const { body : userPet } = req;
 
         try{
@@ -43,7 +49,7 @@ function userPetsApi(app) {
         }
     });
 
-    router.delete('/:userPetId', validationHandler({userPetId : petIdSchema}, 'params' ),
+    router.delete('/:userPetId', passport.authenticate('jwt', { session : false }), validationHandler({userPetId : petIdSchema}, 'params' ),
     async function (req, res, next){
         const { userPetId } = req.query;
 

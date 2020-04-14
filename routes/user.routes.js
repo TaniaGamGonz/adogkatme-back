@@ -13,7 +13,7 @@ function UserApi(app) {
     router.get('/', async function(req, res, next){
         const { email } = req.query;
         try {
-            const user = await userService.getUser({ email });
+            const user = await userService.getUserByEmail({ email });
             res.status(200).json(user);
         }catch(err){
             next(err);
@@ -23,7 +23,7 @@ function UserApi(app) {
     router.get('/:userId',validationHandler({userId : userIdSchema}, 'params'), async function(req, res, next){
         const { userId } = req.params;
         try {
-            const user = await userService.getUser({ userId });
+            const user = await userService.getUserById({ userId });
 
             res.status(200).json(user);
         }catch(err){

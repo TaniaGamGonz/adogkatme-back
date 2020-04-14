@@ -1,6 +1,8 @@
 const joi = require('@hapi/joi');
 
-const userIdSchema = joi.string().regex(/^[0/9a-fA-F]{24}$/);
+
+const userIdSchema = joi.string().regex(/^[0-9a-fA-F]{24}$/);
+
 const createUserSchema = {
     name: joi.string().required(),
     email: joi.string().email().required(),
@@ -15,6 +17,11 @@ const createUserSchema = {
     country: joi.array(),
     city: joi.array(),
     photo: joi.string(),
+    receptions: joi.string().allow(""),
+    adoptions: joi.string().allow(""),
+    inAdoption: joi.array(),
+    favorites: joi.array(),
+
 }
 
 module.exports = {

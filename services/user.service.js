@@ -7,9 +7,14 @@ class UsersService {
         this.mongoDB = new MongoLib();
     }
 
-    async getUser( { email } ){
+    async getUserByEmail( { email } ){
         const [ user ] = await this.mongoDB.getAll(this.collection, { email });
         return user;
+    }
+
+    async getUserById( { userId } ){
+        const user = await this.mongoDB.get(this.collection, userId );
+        return user || {};
     }
 
     async createUser( { user } ){

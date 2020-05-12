@@ -16,19 +16,22 @@ require('../utils/auth/basic.js');
 
 function authApi(app){
     const router = express.Router();
-    app.use('/api/auth', router)
+    app.use('/api/auth', router);
 
     const apiKeyService = new ApiKeyService();
     const userService = new UserService();
 
     router.post('/sign-in', async function(req, res, next) {
         const { apiKeyToken } = req.body;
+
+
         if(!apiKeyToken){
             next(boom.unauthorized('apiKeyToken es requerido'));
         }
         passport.authenticate('basic', function(error, user){
+
             try{
-                if(error || !user){
+               if(error || !user){
                     next(boom.unauthorized('no hay user'));
                 }
 
@@ -55,6 +58,7 @@ function authApi(app){
                     const token = jwt.sign(payload, config.atuhJwtSecret, {
                         expiresIn: '15m'
                     });
+                    res.cookie('sessionId', token, { expires: new Date(Date.now() + 9000000000000), httpOnly:true});
                     return res.status(200).json({ token, user: {id, name, email}})
                 })
 
@@ -70,12 +74,14 @@ function authApi(app){
             const createUserId = await  userService.createUser( { user } );
             res.status(201).json({
                 data: createUserId,
-                message: 'usuario creado'
-            })
+                message: 'usuario creado',
+                created: true
+            });
         }catch(error){
             next(error);
         }
     })
+
 }
 
 module.exports = authApi;

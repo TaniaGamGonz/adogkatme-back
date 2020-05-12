@@ -8,7 +8,9 @@ const UserService = require('../../services/user.service');
 passport.use( new BasicStrategy(async function(email, password, cb){
     const userService = new UserService();
     try{
-        const user = await userService.getUser( { email } );
+        
+        const user = await userService.getUserByEmail( { email } );
+  
         if(!user){
             return cb(boom.unauthorized(), false);
         }
@@ -19,7 +21,7 @@ passport.use( new BasicStrategy(async function(email, password, cb){
         }
         delete user.password;
         return cb(null, user);
-    }catch(error){
-        cb(error)
+    }catch(error){  
+       return cb(error)
     }
 }))

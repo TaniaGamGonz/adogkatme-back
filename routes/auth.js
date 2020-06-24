@@ -59,7 +59,7 @@ function authApi(app){
                         expiresIn: '15m'
                     });
                     res.cookie('sessionId', token, { expires: new Date(Date.now() + 9000000000000), httpOnly:true});
-                    return res.status(200).json({ token, user: {id, name, email}})
+                    return res.status(200).json({ token, user: {id, name}})
                 })
 
             }catch(error){

@@ -26,6 +26,30 @@ class UsersService {
 
         return createUserId;
     }
+
+    async favouritesPets( userId, { petId }){
+        const user = await this.mongoDB.get(this.collection, userId);
+        let  userFavorites = user.favorites;
+        const isAlreadyFavourite =  user.favorites.includes(petId);
+        let favorites;
+
+        if(isAlreadyFavourite){
+            const removedPetFavorites = userFavorites.filter(pets => pets==!petId);
+            favorites  = { favorites : removedPetFavorites}
+                
+         }else{
+             user.favorites.push(petId);
+             favorites = { favorites : userFavorites };      
+         }
+ 
+         const userFavoritesUpdate =  this.mongoDB.update(this.collection, userId, favorites )
+ 
+         return userFavoritesUpdate
+
+        
+    }
+
+
 }
 
 module.exports = UsersService;

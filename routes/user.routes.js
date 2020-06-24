@@ -44,17 +44,20 @@ function UserApi(app) {
 
 
     router.put('/:userId',validationHandler({userId : userIdSchema}, 'params'), async function(req, res, next){ 
-        const { body : userFav } = req; 
+        const { body : petId } = req; 
         const { userId } = req.params;
 
         try {
-            const updateduserId = await userService.updateUser({ userId, userFav  });
+           
+            const favouritesPets = await userService.favouritesPets( userId, petId  );
+            res.status(200).json(favouritesPets);
 
-            res.status(200).json(updateduserId);
         }catch(err){
             next(err);
         }
     });
+
+
 
 
 

@@ -43,13 +43,25 @@ function UserApi(app) {
     });
 
 
-    router.put('/:userId',validationHandler({userId : userIdSchema}, 'params'), async function(req, res, next){ 
+    router.get('/favorites/:userId',validationHandler({userId : userIdSchema }, 'params'), async function (req, res, next) {
+        const { userId } = req.params;
+
+        try{
+           
+            const favoritesPets = await userService.getFavorites( userId );
+            res.status(200).json(favoritesPets);
+        }catch(err){
+            next(err);
+        }
+    })
+
+    router.put('/favorites/:userId',validationHandler({userId : userIdSchema}, 'params'), async function(req, res, next){ 
         const { body : petId } = req; 
         const { userId } = req.params;
 
         try {
            
-            const favouritesPets = await userService.favouritesPets( userId, petId  );
+            const favouritesPets = await userService.favoritesPets( userId, petId  );
             res.status(200).json(favouritesPets);
 
         }catch(err){

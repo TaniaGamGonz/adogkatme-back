@@ -27,7 +27,13 @@ class UsersService {
         return createUserId;
     }
 
-    async favouritesPets( userId, { petId }){
+    async getFavorites( userId ){
+        const user = await this.mongoDB.get(this.collection, userId);
+        return user.favorites
+
+    }
+
+    async favoritesPets( userId, { petId }){
         const user = await this.mongoDB.get(this.collection, userId);
         let  userFavorites = user.favorites;
         const isAlreadyFavourite =  user.favorites.includes(petId);

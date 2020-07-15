@@ -1,5 +1,5 @@
 const express = require ('express');
-const passport = require('passport');
+//const passport = require('passport');
 const PetsService = require('../services/pet.service');
 const { petIdSchema, createPetSchema } = require('../utils/schemas/pets.schema.js');
 const validationHandler  = require('../utils/middlewares/validationHandler.js');

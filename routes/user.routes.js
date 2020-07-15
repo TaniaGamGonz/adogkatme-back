@@ -61,18 +61,13 @@ function UserApi(app) {
 
         try {
            
-            const favouritesPets = await userService.favoritesPets( userId, petId  );
+            const favouritesPets = await userService.updateFavoritesPets( userId, petId  );
             res.status(200).json(favouritesPets);
 
         }catch(err){
             next(err);
         }
     });
-
-
-
-
-
 
 }
 

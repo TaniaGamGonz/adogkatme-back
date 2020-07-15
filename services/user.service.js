@@ -1,10 +1,12 @@
 const MongoLib = require('../lib/mongo.js')
 const bcrypt = require('bcrypt');
+const PetsService = require('./pet.service');
 
 class UsersService {
     constructor(){
         this.collection = 'users';
         this.mongoDB = new MongoLib();
+        this.PetsService = new PetsService();
     }
 
     async getUserByEmail( { email } ){
@@ -29,11 +31,18 @@ class UsersService {
 
     async getFavorites( userId ){
         const user = await this.mongoDB.get(this.collection, userId);
-        return user.favorites
+
+        const favsPetPromises  =   user.favorites.map(petId  => {
+         return this.PetsService.getPet({petId});
+         });
+
+        let petsFavs =  await Promise.all(favsPetPromises);
+
+        return petsFavs;
 
     }
 
-    async favoritesPets( userId, { petId }){
+    async updateFavoritesPets( userId, { petId }){
         const user = await this.mongoDB.get(this.collection, userId);
         let  userFavorites = user.favorites;
         const isAlreadyFavourite =  user.favorites.includes(petId);
@@ -48,12 +57,13 @@ class UsersService {
              favorites = { favorites : userFavorites };      
          }
  
-         const userFavoritesUpdate =  this.mongoDB.update(this.collection, userId, favorites )
- 
-         return userFavoritesUpdate
+          await this.mongoDB.update(this.collection, userId, favorites )
 
+         return await this.getFavorites(userId); 
         
     }
+
+    
 
 
 }
